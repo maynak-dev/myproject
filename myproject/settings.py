@@ -9,17 +9,17 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')  # Must be set in .env or environment
+#SECRET_KEY = config('SECRET_KEY')  # Must be set in .env or environment
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+#DEBUG = config('DEBUG', default=False, cast=bool)
 
 # ALLOWED_HOSTS: split comma-separated string, filter out empty strings
 #ALLOWED_HOSTS = [h.strip() for h in config('ALLOWED_HOSTS', default='').split(',') if h.strip()]
-ALLOWED_HOSTS = ['*']
+#ALLOWED_HOSTS = ['*']
 
 # CSRF trusted origins: must include scheme (http:// or https://)
-CSRF_TRUSTED_ORIGINS = [o.strip() for o in config('CSRF_TRUSTED_ORIGINS', default='').split(',') if o.strip()]
+#CSRF_TRUSTED_ORIGINS = [o.strip() for o in config('CSRF_TRUSTED_ORIGINS', default='').split(',') if o.strip()]
 
 # Application definition
 INSTALLED_APPS = [
@@ -72,14 +72,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 # Database – use dj_database_url for production, fallback to SQLite for local
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+#         conn_max_age=600,
+#         conn_health_checks=True,
+#         ssl_require=True
+#     )
+# }
 
 
 
