@@ -2,24 +2,17 @@
 Django settings for myproject project.
 """
 from pathlib import Path
-import os
+from datetime import timedelta
 import dj_database_url
-from decouple import config
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = config('SECRET_KEY')  # Must be set in .env or environment
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '0)oh79#3%2zyf5*x#v_*gf87u9u(q+l-&w$04)nvf)ae)m(ap(')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# ALLOWED_HOSTS: split comma-separated string, filter out empty strings
-#ALLOWED_HOSTS = [h.strip() for h in config('ALLOWED_HOSTS', default='').split(',') if h.strip()]
-#ALLOWED_HOSTS = ['*']
-
-# CSRF trusted origins: must include scheme (http:// or https://)
-#CSRF_TRUSTED_ORIGINS = [o.strip() for o in config('CSRF_TRUSTED_ORIGINS', default='').split(',') if o.strip()]
+ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -50,7 +43,7 @@ MIDDLEWARE = [
 ]
 
 # CORS allowed origins: must include scheme
-CORS_ALLOWED_ORIGINS = [o.strip() for o in config('CORS_ALLOWED_ORIGINS', default='').split(',') if o.strip()]
+#CORS_ALLOWED_ORIGINS = [o.strip() for o in config('CORS_ALLOWED_ORIGINS', default='').split(',') if o.strip()]
 
 ROOT_URLCONF = 'myproject.urls'
 
@@ -71,15 +64,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-# Database – use dj_database_url for production, fallback to SQLite for local
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-#         conn_max_age=600,
-#         conn_health_checks=True,
-#         ssl_require=True
-#     )
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+}
 
 
 
@@ -107,6 +101,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
+
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -117,3 +116,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'https://my-admin-panel-frontend.vercel.app',
+]
