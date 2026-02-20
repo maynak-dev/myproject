@@ -5,6 +5,9 @@ from pathlib import Path
 from datetime import timedelta
 import dj_database_url
 import os
+from dotenv import load_dotenv
+load_dotenv()
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -71,8 +74,16 @@ DATABASES = {
     }
 }
 
+
+# Initialise environment variables
+env = environ.Env()
+# Read the .env file
+environ.Env.read_env()  # looks for .env in the same directory as settings.py by default
+
+# Now you can use env.db()
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': env.db('DATABASE_URL'),      # pooled connection
+    'direct': env.db('DIRECT_URL'),         # direct connection for migrations
 }
 
 
